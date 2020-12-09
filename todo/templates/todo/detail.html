@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>詳細</h1>
+    {% if todo %}
+        <table>
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>内容</th>
+                    <th>状況</th>
+                    <tr></tr>
+                </tr>
+            </thead>
+            <tbody>
+                <form action="{% url 'edit' todo.id %}" method="post">
+                    {% csrf_token %}
+                    <tr>
+                        <th>
+                            <input type="text" name="title" id="title" value="{{ todo.title }}">
+                        </th>
+                        <th>
+                            <input type="text" name="content" id="content" value="{{ todo.content }}">
+                        </th>
+                        <th>
+                            <input type="radio" name="status" id="status_true" value="true" 
+                                {% if todo.status %}
+                                checked
+                                {% endif %}
+                            ><label for="status_true">完了</label><br>
+                            <input type="radio" name="status" id="status_false" value="false"
+                                {% if not todo.status %}
+                                checked
+                                {% endif %}
+                            ><label for="status_false">未完了</label>
+                            <!-- {% if todo.status %}
+                                完了
+                            {% else %}
+                                未完了
+                            {% endif %} -->
+    
+                        </th>
+                        <th>
+                            <input type="submit" value="変更">
+                        </th>
+                    </tr>
+
+                </form>
+
+            </tbody>
+        </table>
+
+        <form action="{% url 'delete' todo.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="削除">
+            <!-- <input type="hidden" name="_method" value="DELETE"> -->
+        </form>
+
+
+
+  
+    {% else %}
+        <p>No data</p>
+    {% endif %}
+    
+    <a href="{% url 'index' %}">一覧</a>
+</body>
+</html>

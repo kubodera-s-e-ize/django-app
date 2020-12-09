@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Todoリスト</h1>
+    {% if todos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>状況</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for todo in todos %}
+                    <tr>
+                        <th><a href="{% url 'detail' todo.id %}" style="margin-right: 1rem;">{{ todo.title }}</a></th>
+                        <th>
+                            {% if todo.status %}
+                                完了
+                            {% else %}
+                                未完了
+                            {% endif %}
+
+                        </th>
+                        <th>
+                            <form action="{% url 'delete' todo.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="削除">
+                                <!-- <input type="hidden" name="_method" value="DELETE"> -->
+                            </form>
+                        </th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>No todos are available.</p>
+    {% endif %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>タイトル</th>
+                <th>内容</th>
+                <th>状況</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                <tr>
+                    <th>
+                        <input type="text" name="title" id="title">
+                    </th>
+                    <th>
+                        <input type="text" name="content" id="content">
+                    </th>
+                    <th>
+                        <input type="radio" name="status" id="status_true" value="true"><label for="status_true">完了</label><br>
+                        <input type="radio" name="status" id="status_false" value="false" checked><label for="status_false">未完了</label>
+
+                    </th>
+                    <th>
+                        <input type="submit" value="作成">
+                    </th>
+                </tr>
+
+            </form>
+
+        </tbody>
+    </table>
+    
+</body>
+</html>
